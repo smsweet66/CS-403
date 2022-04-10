@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleInstances #-}
 isAscending :: Ord a => [a] -> Bool
 isAscending [] = True
 isAscending [_] = True
@@ -16,26 +17,28 @@ isSorted (x:y:xs) = isAscending (x:y:xs) || isDescending (x:y:xs)
 areSorted :: Ord a => [[a]] -> Bool
 areSorted = foldr ((&&) . isSorted) True
 
-contains :: Eq a => a -> [a] -> Bool
-contains _ [] = False
-contains x (y:ys) = x == y || contains x ys
+class MyType a where
+    isIn :: Int -> a -> Bool
 
-containsAll :: Eq a => [a] -> [a] -> Bool
-containsAll [] _ = True
-containsAll (x:xs) ys = contains x ys && containsAll xs ys
+instance MyType [Int] where
+    isIn n xs = n `elem` xs
 
-isIn :: Eq a => a -> [[a]] -> Bool
-isIn _ [] = False
-isIn x (y:ys) = contains x y || isIn x ys
+instance MyType [[Int]] where
+    isIn n xs = any (isIn n) xs
 
-areIn :: Eq a => [a] -> [[a]] -> Bool
-areIn [] _ = True
-areIn (x:xs) ys = isIn x ys && areIn xs ys
+class MyType2 a where
+    areIn :: [Int] -> a -> Bool
+
+instance MyType2 [Int] where
+    areIn ns xs = all (`elem` xs) ns
+
+instance MyType2 [[Int]] where
+    areIn ns xs = all (`isIn` xs) ns
 
 main = do
     print(isSorted [1,2,3,4,5])
     print(isSorted [5,4,3,2,1])
     print(isSorted [1,3,2,4,5])
     print(areSorted [[1,2,3,4,5],[5,4,3,2,1],[1,2,3,4,5]])
-    print(isIn 10 [[1,2,3,4,5], [10,20,30,40,50]])
-    print(areIn [1,2,10] [[1,2,3,4,5], [10,20,30,40,50]])
+    print(isIn 15 ([[1,2,3,4,5], [10,20,30,40,50]] :: [[Int]]))
+    print(areIn [1,2,10] ([[1,2,3,4,5], [10,20,30,40,50]] :: [[Int]]))
