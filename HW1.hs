@@ -12,10 +12,10 @@ isDescending (x:y:xs) = x >= y && isDescending (y:xs)
 isSorted :: Ord a => [a] -> Bool
 isSorted [] = True
 isSorted [_] = True
-isSorted (x:y:xs) = isAscending (x:y:xs) || isDescending (x:y:xs)
+isSorted x = isAscending x || isDescending x
 
 areSorted :: Ord a => [[a]] -> Bool
-areSorted = foldr ((&&) . isSorted) True
+areSorted = all isSorted
 
 class MyType a where
     isIn :: Int -> a -> Bool
@@ -41,4 +41,5 @@ main = do
     print(isSorted [1,3,2,4,5])
     print(areSorted [[1,2,3,4,5],[5,4,3,2,1],[1,2,3,4,5]])
     print(isIn 15 ([[1,2,3,4,5], [10,20,30,40,50]] :: [[Int]]))
+    print(isIn 1 ([1,2,3,4,5] :: [Int]))
     print(areIn [1,2,10] ([[1,2,3,4,5], [10,20,30,40,50]] :: [[Int]]))
