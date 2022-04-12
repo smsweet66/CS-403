@@ -1,3 +1,5 @@
+--Author: Sean Sweet
+
 isAscending :: Ord a => [a] -> Bool
 isAscending [] = True
 isAscending [_] = True
