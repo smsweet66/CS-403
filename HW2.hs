@@ -23,11 +23,3 @@ lower = map (map toLower)
 --Given a list of strings, return a list where each string has all its "x" removed
 noX:: [String] -> [String]
 noX = map (filter (/= 'x'))
-
-main = do
-    print $ doubling [1,2,3,4,5]
-    print $ square [1,2,3,4,5]
-    print $ rightDigit [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-    print $ addStar ["hello","world"]
-    print $ lower ["HELLO","WORLD"]
-    print $ noX ["xHELLOx","WORLDx"]
